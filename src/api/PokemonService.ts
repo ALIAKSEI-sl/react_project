@@ -1,9 +1,7 @@
 import { IData, IPokemon, Item } from './models';
 
-type Nullable<T> = T | null;
-
 class PokemonService {
-  private url = 'https://pokeapi.co/api/v2/pokemon/?limit=20';
+  private url = 'https://pokeapi.co/api/v2/pokemon/';
 
   async getAllPokemon() {
     const response = await fetch(this.url);
@@ -12,7 +10,7 @@ class PokemonService {
     }
     const data: IData = await response.json();
     const pokemonList = await Promise.all(
-      data.results.map((p: Item) => this.getPokemon(p.url))
+      data.results.map((item: Item) => this.getPokemon(item.url))
     );
     return pokemonList;
   }
@@ -26,7 +24,7 @@ class PokemonService {
   }
 
   async getPokemonByQuery(searchTerm: string) {
-    const url = `https://pokeapi.co/api/v2/pokemon/${searchTerm}`;
+    const url = `${this.url}${searchTerm}`;
     return this.getPokemon(url);
   }
 }
