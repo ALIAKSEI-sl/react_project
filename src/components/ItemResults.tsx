@@ -7,7 +7,7 @@ type ItemProp = {
 export default function ItemResults(props: ItemProp) {
   const { item } = props;
   return (
-    <div className="card">
+    <li className="card">
       <img
         className="card-img"
         src={item.sprites.other.dream_world.front_default}
@@ -34,6 +34,6 @@ export default function ItemResults(props: ItemProp) {
         <strong>height: </strong>
         {item.height}
       </p>
-    </div>
+    </li>
   );
 }

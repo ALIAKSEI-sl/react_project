@@ -1,10 +1,9 @@
 import { Component } from 'react';
-import './App.css';
-import Search from './components/Search';
-import ListResults from './components/ListResults';
-import requestService from './api/PokemonService';
+
 import { IPokemon } from './api/models';
-import Loader from './components/Loader';
+import requestService from './api/PokemonService';
+import './App.css';
+import { ListResults, Loader, Search } from './components/index';
 
 type AppProp = object;
 

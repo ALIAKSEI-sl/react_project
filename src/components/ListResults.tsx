@@ -1,5 +1,5 @@
 import { IPokemon } from '../api/models';
-import ItemResults from './ItemResult';
+import ItemResults from './ItemResults';
 
 type ListProp = {
   items: IPokemon[];
@@ -11,10 +11,10 @@ export default function ListResults(props: ListProp) {
     return <p>Ничего не найдено</p>;
   }
   return (
-    <div className="container">
-      {items.map((p) => (
-        <ItemResults item={p} key={p.id} />
+    <ul className="container">
+      {items.map((item) => (
+        <ItemResults item={item} key={item.id} />
       ))}
-    </div>
+    </ul>
   );
 }
