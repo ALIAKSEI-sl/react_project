@@ -1,7 +1,7 @@
 export interface IData {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: Nullable<string>;
+  previous: Nullable<string>;
   results: Item[];
 }
 
