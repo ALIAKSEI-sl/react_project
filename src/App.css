@@ -1,0 +1,91 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.searchInput {
+  width: 80%;
+  height: 50px;
+  font-size: 24px;
+  background-color: rgb(205, 205, 205);
+  border: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.searchBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.searchButton {
+  width: 80px;
+  height: 50px;
+  background-color: rgb(179, 179, 179);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.card {
+  width: 250px;
+  padding: 30px;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-img {
+  max-width: 100%;
+  height: 200px;
+}
+
+.errorButton {
+  background-color: rgb(179, 179, 179);
+  border: 2px solid rgb(228, 39, 39);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  margin-left: 20px;
+}
+
+.container-loader {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px dashed rgb(205, 205, 205);
+  animation: rotate 0.5s infinite linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
