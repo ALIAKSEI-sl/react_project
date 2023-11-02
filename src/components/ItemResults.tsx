@@ -1,10 +1,10 @@
 import { IPokemon } from '../api/models';
 
-type ItemProp = {
+type ItemProps = {
   item: IPokemon;
 };
 
-export default function ItemResults(props: ItemProp) {
+export default function ItemResults(props: ItemProps) {
   const { item } = props;
   return (
     <li className="card">

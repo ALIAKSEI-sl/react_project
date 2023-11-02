@@ -1,49 +1,34 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import { IPokemon } from './api/models';
 import requestService from './api/PokemonService';
 import './App.css';
 import { ListResults, Loader, Search } from './components/index';
 
-type AppProp = object;
+export default function App() {
+  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-type AppState = {
-  pokemon: IPokemon[];
-  isLoading: boolean;
-};
+  const searchByTerm = async (searchTerm: string) => {
+    setIsLoading(true);
 
-export default class App extends Component<AppProp, AppState> {
-  constructor(props: AppProp) {
-    super(props);
-    this.state = {
-      pokemon: [],
-      isLoading: false,
-    };
-  }
-
-  updateItems = async (searchTerm: string) => {
-    this.setState({ isLoading: true });
     if (searchTerm) {
-      const pokemon = await requestService.getPokemonByQuery(searchTerm);
-      this.setState({ pokemon: pokemon ? [pokemon] : [] });
+      const pokemonByQuery = await requestService.getPokemonByQuery(searchTerm);
+      setPokemon(pokemonByQuery ? [pokemonByQuery] : []);
     } else {
-      const allPokemon = await requestService.getAllPokemon();
-      const pokemon = allPokemon.filter(Boolean) as IPokemon[];
-      this.setState({
-        pokemon,
-      });
+      const pokemonResults = await requestService.getAllPokemon();
+      const allPokemon = pokemonResults.filter(Boolean) as IPokemon[];
+      setPokemon(allPokemon);
     }
-    this.setState({ isLoading: false });
+
+    setIsLoading(false);
   };
 
-  render() {
-    const { pokemon, isLoading } = this.state;
-    return (
-      <>
-        <Search update={this.updateItems} />
-        <hr />
-        {isLoading ? <Loader /> : <ListResults items={pokemon} />}
-      </>
-    );
-  }
+  return (
+    <>
+      <Search searchByTerm={searchByTerm} />
+      <hr />
+      {isLoading ? <Loader /> : <ListResults items={pokemon} />}
+    </>
+  );
 }
