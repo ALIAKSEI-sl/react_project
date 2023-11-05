@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { IParams } from '../models/params.interface';
+
 type PaginationProps = {
   count: number;
 };
@@ -11,7 +13,7 @@ export default function Pagination(props: PaginationProps) {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const params = Object.fromEntries(searchParams.entries());
+  const params: IParams = Object.fromEntries(searchParams.entries());
 
   const { count } = props;
 

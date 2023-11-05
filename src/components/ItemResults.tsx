@@ -1,13 +1,25 @@
-import { IPokemon } from '../api/models';
+import { useSearchParams } from 'react-router-dom';
+
+import { IParams } from '../models/params.interface';
+import { IPokemon } from '../models/response.interface';
 
 type ItemProps = {
   item: IPokemon;
 };
 
 export default function ItemResults(props: ItemProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const params: IParams = Object.fromEntries(searchParams.entries());
+
   const { item } = props;
+
+  const handleItemClick = () => {
+    setSearchParams({ ...params, details: String(item.id) });
+  };
+
   return (
-    <li className="card">
+    <li className="card" onClick={handleItemClick}>
       <img
         className="card-img"
         src={item.sprites.other.dream_world.front_default}
@@ -15,24 +27,8 @@ export default function ItemResults(props: ItemProps) {
       />
       <h2>{item.name}</h2>
       <p>
-        <strong>experience: </strong>
-        {item.base_experience}
-      </p>
-      <p>
         <strong>types: </strong>
         {item.types.map((t) => t.type.name).join(', ')}
-      </p>
-      <p>
-        <strong>abilities: </strong>
-        {item.abilities.map((a) => a.ability.name).join(', ')}
-      </p>
-      <p>
-        <strong>weight: </strong>
-        {item.weight}
-      </p>
-      <p>
-        <strong>height: </strong>
-        {item.height}
       </p>
     </li>
   );
