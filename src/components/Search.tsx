@@ -1,24 +1,35 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-type SearchProps = {
-  searchByTerm: (searchTerm: string) => void;
-};
+import { IParams } from '../models/params.interface';
 
-export default function Search(props: SearchProps) {
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem('pokemon-searchTerm') ?? ''
-  );
+export default function Search() {
+  const defaultParam = { page: '1', details: 'false' };
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { searchByTerm } = props;
+  const params: IParams = Object.fromEntries(searchParams.entries());
 
   useEffect(() => {
-    searchByTerm(searchTerm);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSearchParams({
+      ...params,
+      details: defaultParam.details,
+    });
+    if (params.search) {
+      setSearchTerm(params.search);
+    }
   }, []);
 
   const handleSearchClick = () => {
-    searchByTerm(searchTerm);
-    localStorage.setItem('pokemon-searchTerm', searchTerm);
+    setSearchParams({
+      ...params,
+      ...defaultParam,
+      search: searchTerm,
+    });
+  };
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -26,9 +37,7 @@ export default function Search(props: SearchProps) {
       <input
         className="searchInput"
         value={searchTerm}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setSearchTerm(event.target.value)
-        }
+        onChange={handleSearchChange}
       />
       <button
         type="button"
