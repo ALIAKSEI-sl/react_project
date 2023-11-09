@@ -1,27 +1,17 @@
-import { ChangeEvent, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { ChangeEvent } from 'react';
 
-import { IParams } from '../models/params.interface';
+import useQueryParams from '../hooks/useQueryParams';
 
 type PaginationProps = {
   count: number;
 };
 
 export default function Pagination(props: PaginationProps) {
-  const limits = ['10', '15', '20', '25', '30'];
-  const defParams = { page: '1', limit: '20', details: 'false' };
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const params: IParams = Object.fromEntries(searchParams.entries());
-
   const { count } = props;
+  const limits = ['10', '15', '20', '25', '30'];
+  const defParams = { page: '1', details: 'false' };
 
-  useEffect(() => {
-    if (!params.page || !params.limit) {
-      setSearchParams({ ...params, ...defParams });
-    }
-  }, []);
+  const [params, setSearchParams] = useQueryParams();
 
   const nextPage = () => {
     const page = Number(params.page);
@@ -44,7 +34,12 @@ export default function Pagination(props: PaginationProps) {
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
-    setSearchParams({ ...params, limit: value, details: defParams.details });
+    setSearchParams({
+      ...params,
+      limit: value,
+      page: defParams.page,
+      details: defParams.details,
+    });
   };
 
   return (

@@ -1,23 +1,17 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
-import { IParams } from '../models/params.interface';
+import useQueryParams from '../hooks/useQueryParams';
 
 export default function Search() {
-  const defaultParam = { page: '1', details: 'false' };
+  const defaultParam = { page: '1' };
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const params: IParams = Object.fromEntries(searchParams.entries());
+  const [params, setSearchParams] = useQueryParams();
 
   useEffect(() => {
-    setSearchParams({
-      ...params,
-      details: defaultParam.details,
-    });
     if (params.search) {
       setSearchTerm(params.search);
     }
+    setSearchParams({ page: '1' });
   }, []);
 
   const handleSearchClick = () => {

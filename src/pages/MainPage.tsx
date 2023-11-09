@@ -1,20 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 
 import requestService from '../api/PokemonService';
 import { ListResults, Loader, Search } from '../components/index';
+import useQueryParams from '../hooks/useQueryParams';
 import { IParams } from '../models/params.interface';
 import { IPokemon } from '../models/response.interface';
 
 export default function MainPage() {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-  const [countPokemon, setCountPokemon] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchParams] = useSearchParams();
+  const defaultParams = { page: '1', limit: '20', details: 'false' };
 
-  const { page, limit, search, details }: IParams = Object.fromEntries(
-    searchParams.entries()
-  );
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { search: query } = useLocation();
+
+  const [searchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [countPokemon, setCountPokemon] = useState(0);
+  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
+
+  const [params, setSearchParams] = useQueryParams();
+  const { page, limit, search, details }: IParams = params;
 
   const getPokemon = async () => {
     setIsLoading(true);
@@ -31,12 +43,30 @@ export default function MainPage() {
       setCountPokemon(results.count);
       setPokemon(allPokemon);
     }
+
     setIsLoading(false);
   };
 
-  useEffect(() => {
+  const updatePage = () => {
     if (details === 'false') {
+      navigate(`/${query}`);
       getPokemon();
+    } else if (!details) {
+      navigate(`/${query}`);
+    } else if (details && !pokemon.length) {
+      getPokemon();
+    }
+  };
+
+  useEffect(() => {
+    if (searchParams.size) {
+      if (id) {
+        updatePage();
+      } else {
+        getPokemon();
+      }
+    } else {
+      setSearchParams(defaultParams);
     }
   }, [searchParams]);
 
@@ -50,7 +80,7 @@ export default function MainPage() {
         ) : (
           <ListResults items={pokemon} count={countPokemon} />
         )}
-        {details !== 'false' && details !== 'close' && <Outlet />}
+        <Outlet />
       </div>
     </>
   );

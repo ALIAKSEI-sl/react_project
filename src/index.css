@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
+
 .error-block {
   font-size: 50px;
 }

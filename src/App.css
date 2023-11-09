@@ -52,6 +52,13 @@
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  color: white;
+}
+
+.active {
+  .card {
+    background-color: rgb(204, 202, 199);
+  }
 }
 
 .card-img {
