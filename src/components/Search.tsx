@@ -1,36 +1,37 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect } from 'react';
 
+import { SearchTermContext } from '../contexts/contexts';
 import useQueryParams from '../hooks/useQueryParams';
 
 export default function Search() {
-  const defaultParam = { page: '1' };
-  const [searchTerm, setSearchTerm] = useState('');
+  const defaultParam = { page: '1', details: 'false' };
+  const context = useContext(SearchTermContext);
+
   const [params, setSearchParams] = useQueryParams();
 
   useEffect(() => {
     if (params.search) {
-      setSearchTerm(params.search);
+      context.setSearchTerm(params.search);
     }
-    setSearchParams({ page: '1' });
   }, []);
 
   const handleSearchClick = () => {
     setSearchParams({
       ...params,
       ...defaultParam,
-      search: searchTerm,
+      search: context.searchTerm,
     });
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+    context?.setSearchTerm(event.target.value);
   };
 
   return (
     <div className="searchBlock">
       <input
         className="searchInput"
-        value={searchTerm}
+        value={context.searchTerm}
         onChange={handleSearchChange}
       />
       <button
