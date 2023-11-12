@@ -41,7 +41,12 @@ export default function Pagination() {
 
   return (
     <div className="pagination">
-      <button type="button" onClick={previousPage} className="page-button">
+      <button
+        type="button"
+        onClick={previousPage}
+        className="page-button"
+        data-testid="previous"
+      >
         &lt;
       </button>
       <p className="page">{params.page}</p>
@@ -56,7 +61,12 @@ export default function Pagination() {
           </option>
         ))}
       </select>
-      <button type="button" className="page-button" onClick={nextPage}>
+      <button
+        type="button"
+        className="page-button"
+        onClick={nextPage}
+        data-testid="next"
+      >
         &gt;
       </button>
     </div>
