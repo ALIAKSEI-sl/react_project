@@ -24,7 +24,7 @@ export default function Search() {
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    context?.setSearchTerm(event.target.value);
+    context.setSearchTerm(event.target.value);
   };
 
   return (

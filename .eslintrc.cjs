@@ -62,5 +62,11 @@ module.exports = {
       version: 'detect',
     },
   },
-  ignorePatterns: ['dist', 'vite.config.ts', '.eslintrc.cjs'],
+  ignorePatterns: [
+    'dist',
+    'vite.config.ts',
+    '.eslintrc.cjs',
+    'jest.config.ts',
+    'setupTest.ts',
+  ],
 };
