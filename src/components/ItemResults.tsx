@@ -19,8 +19,8 @@ export default function ItemResults(props: ItemProps) {
   };
 
   return (
-    <NavLink to={link}>
-      <li className="card" onClick={handleItemClick}>
+    <NavLink to={link} onClick={handleItemClick}>
+      <li className="card">
         <img
           className="card-img"
           src={item.sprites.other.dream_world.front_default}

@@ -22,10 +22,7 @@ const config: Config = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.test.{js,jsx,ts,tsx}',
-  ],
+  collectCoverageFrom: ['src/**/*.{jsx,tsx}', '!src/**/*.spec.{js,jsx,ts,tsx}'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
@@ -39,7 +36,7 @@ const config: Config = {
   coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: ['text', 'html'],
+  coverageReporters: ['text'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
