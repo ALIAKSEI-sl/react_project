@@ -12,7 +12,7 @@ export default function ListResults() {
 
   const [params, setSearchParams] = useQueryParams();
 
-  const handleItemClick: MouseEventHandler<HTMLDivElement> = async (event) => {
+  const handleItemClick: MouseEventHandler<HTMLDivElement> = (event) => {
     const classes = ['container-results', 'block-results'];
     const elem = event.target as HTMLElement;
     const isClose = classes.some((name) => elem.classList.contains(name));
@@ -27,7 +27,11 @@ export default function ListResults() {
   }
 
   return (
-    <div className="container-results" onClick={handleItemClick}>
+    <div
+      className="container-results"
+      onClick={handleItemClick}
+      data-testid="results"
+    >
       <Pagination />
       <ul className="block-results">
         {context.pokemon.map((item) => (
