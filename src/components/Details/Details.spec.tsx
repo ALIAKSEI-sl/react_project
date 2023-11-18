@@ -2,8 +2,8 @@ import * as Router from 'react-router-dom';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import { mockPokemonContext } from '../../mocks/mockPokemon';
 import { PokemonContext } from '../contexts/contexts';
-import { mockPokemonContext } from '../mocks/mockPokemon';
 import Details from './Details';
 
 describe('Details', () => {

@@ -1,0 +1,20 @@
+.container-details {
+  position: relative;
+  font-size: 22px;
+  width: 440px;
+  padding: 40px 0 0 40px;
+}
+
+.header-details {
+  width: 400px;
+}
+
+.details-close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+}

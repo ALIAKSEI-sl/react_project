@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
-import Details from './components/Details';
-import MainPage from './pages/MainPage';
+import Details from './components/Details/Details';
+import MainPage from './pages/main/MainPage';
 
 export default function App() {
   return (

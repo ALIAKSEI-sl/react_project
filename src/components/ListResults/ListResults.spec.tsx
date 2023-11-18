@@ -2,11 +2,11 @@ import * as Router from 'react-router-dom';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { PokemonContext } from '../contexts/contexts';
 import {
   mockPokemonContext,
   mockPokemonContextEmpty,
-} from '../mocks/mockPokemon';
+} from '../../mocks/mockPokemon';
+import { PokemonContext } from '../contexts/contexts';
 import ListResults from './ListResults';
 
 describe('ListResults', () => {

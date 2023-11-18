@@ -2,12 +2,17 @@ export interface IData {
   count: number;
   next: Nullable<string>;
   previous: Nullable<string>;
-  results: Item[];
+  results: IItem[];
 }
 
-export interface Item {
+export interface IItem {
   name: string;
   url: string;
+}
+
+export interface IPokemonDetails {
+  count: number;
+  pokemon: IPokemon[];
 }
 
 export interface IPokemon {

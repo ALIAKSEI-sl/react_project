@@ -2,7 +2,7 @@ import * as Router from 'react-router-dom';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { mockPokemon } from '../mocks/mockPokemon';
+import { mockPokemon } from '../../mocks/mockPokemon';
 import ItemResults from './ItemResults';
 
 describe('ItemResults', () => {

@@ -2,7 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { render, screen } from '@testing-library/react';
 
-import { mockPokemon } from '../mocks/mockPokemon';
+import { mockPokemon } from '../../mocks/mockPokemon';
 import DetailsItem from './DetailsItem';
 
 describe('DetailsItem', () => {
