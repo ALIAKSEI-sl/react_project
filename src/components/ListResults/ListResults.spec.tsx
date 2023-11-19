@@ -1,38 +1,32 @@
 import { Provider } from 'react-redux';
 import * as Router from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { mockPokemon, mockPokemonContext } from '../../mocks/mockPokemon';
-import { pokemonApi } from '../../store/pokemon.api';
+import pokemonService from '../../api/PokemonService';
+import server from '../../mocks/handlers';
+import { mockPokemonResponse } from '../../mocks/mockPokemon';
+import { store } from '../../store';
 import ListResults from './ListResults';
 
 describe('ListResults', () => {
-  const mockStore = configureMockStore();
-  const initialState = {
-    search: {
-      page: 2,
-      limit: 20,
-      searchTerm: 'butterfree',
-    },
-  };
+  beforeAll(() => {
+    jest
+      .spyOn(pokemonService, 'getAllPokemon')
+      .mockReturnValue(Promise.resolve(mockPokemonResponse));
 
-  const data = {
-    data: {
-      count: 50,
-      pokemon: mockPokemon,
-    },
-    refetch: jest.fn(),
-  };
-
-  beforeAll(async () => {
-    jest.spyOn(pokemonApi, 'usePokemonQuery').mockReturnValue(data);
+    server.listen();
   });
 
-  it('should render no results', async () => {
-    const store = mockStore(initialState);
+  afterEach(() => {
+    server.resetHandlers();
+  });
 
+  afterAll(() => {
+    server.close();
+  });
+
+  it('should render elements', async () => {
     render(
       <Router.MemoryRouter>
         <Provider store={store}>
@@ -41,56 +35,22 @@ describe('ListResults', () => {
       </Router.MemoryRouter>
     );
 
-    // await waitFor(() => {
-    const element = screen.getByText('Ничего не найдено');
-    expect(element).toBeInTheDocument();
-    // });
-  });
+    await waitFor(() => {
+      const buttonElements = screen.getAllByRole(
+        'button'
+      ) as HTMLButtonElement[];
+      expect(buttonElements.length).toBe(2);
 
-  xit('should render elements', () => {
-    const store = mockStore(initialState);
+      const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
+      expect(selectElement).toBeInTheDocument();
 
-    render(
-      <Router.MemoryRouter>
-        <Provider store={store}>
-          <ListResults />
-        </Provider>
-      </Router.MemoryRouter>
-    );
+      const listItem = screen.getAllByRole('listitem');
+      expect(listItem.length).toBe(1);
 
-    const container = screen.getByTestId('results');
-    expect(container).toBeInTheDocument();
+      const container = screen.getByTestId('results');
+      fireEvent.click(container);
 
-    const listItem = screen.getAllByRole('listitem');
-    expect(listItem.length).toBe(mockPokemonContext.pokemon.length);
-
-    const buttonElements = screen.getAllByRole('button') as HTMLButtonElement[];
-    expect(buttonElements.length).toBe(2);
-
-    const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
-    expect(selectElement).toBeInTheDocument();
-  });
-
-  xit('close Details', () => {
-    const store = mockStore(initialState);
-
-    render(
-      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20&details=8']}>
-        <Router.Routes>
-          <Router.Route
-            path="/:id"
-            element={
-              <Provider store={store}>
-                <ListResults />
-              </Provider>
-            }
-          />
-        </Router.Routes>
-      </Router.MemoryRouter>
-    );
-
-    const element = screen.getByTestId('results');
-
-    fireEvent.click(element);
+      expect(container).toBeInTheDocument();
+    });
   });
 });

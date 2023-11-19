@@ -68,5 +68,6 @@ module.exports = {
     '.eslintrc.cjs',
     'jest.config.ts',
     'setupTest.ts',
+    'jest.polyfills.js',
   ],
 };

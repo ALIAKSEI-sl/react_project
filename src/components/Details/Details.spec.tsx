@@ -1,59 +1,53 @@
+import { Provider } from 'react-redux';
 import * as Router from 'react-router-dom';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+import pokemonService from '../../api/PokemonService';
+import server from '../../mocks/handlers';
+import { mockPokemon } from '../../mocks/mockPokemon';
+import { store } from '../../store';
 import Details from './Details';
 
 describe('Details', () => {
-  const spy = jest.spyOn(Router, 'useSearchParams');
+  beforeAll(() => {
+    jest
+      .spyOn(pokemonService, 'getPokemonByQuery')
+      .mockReturnValue(Promise.resolve(mockPokemon));
 
-  xit('render Loader', () => {
-    render(
-      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20&details=8']}>
-        <Details />
-      </Router.MemoryRouter>
-    );
-
-    const containerLoader = screen.getByTestId('loader');
-    expect(containerLoader).toBeInTheDocument();
+    server.listen();
   });
 
-  xit('render details', () => {
-    render(
-      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20&details=8']}>
-        <Router.Routes>
-          <Router.Route path="/:id" element={<Details />} />
-        </Router.Routes>
-      </Router.MemoryRouter>
-    );
-
-    const buttonElement = screen.getByRole('button') as HTMLButtonElement;
-    expect(buttonElement).toBeInTheDocument();
-
-    const imgElement = screen.getByRole('img') as HTMLImageElement;
-    expect(imgElement).toBeInTheDocument();
-
-    const headerElement = screen.getByRole('heading', { level: 2 });
-    expect(headerElement).toBeInTheDocument();
-
-    screen.debug();
+  afterEach(() => {
+    server.resetHandlers();
   });
 
-  xit('close details', () => {
+  afterAll(() => {
+    server.close();
+  });
+
+  it(' should render details', async () => {
     render(
-      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20&details=8']}>
-        <Router.Routes>
-          <Router.Route path="/:id" element={<Details />} />
-        </Router.Routes>
+      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20']}>
+        <Provider store={store}>
+          <Router.Routes>
+            <Router.Route path="/:id" element={<Details />} />
+          </Router.Routes>
+        </Provider>
       </Router.MemoryRouter>
     );
 
-    const buttonElement = screen.getByRole('button') as HTMLButtonElement;
-    expect(buttonElement).toBeInTheDocument();
-    spy.mockClear();
-    fireEvent.click(buttonElement);
+    await waitFor(() => {
+      const buttonElement = screen.getByRole('button') as HTMLButtonElement;
+      expect(buttonElement).toBeInTheDocument();
 
-    expect(spy).toHaveBeenCalled();
-    expect(spy).toHaveBeenCalledTimes(1);
+      const imgElement = screen.getByRole('img') as HTMLImageElement;
+      expect(imgElement).toBeInTheDocument();
+
+      const headerElement = screen.getByRole('heading', { level: 2 });
+      expect(headerElement).toBeInTheDocument();
+
+      fireEvent.click(buttonElement);
+    });
   });
 });
