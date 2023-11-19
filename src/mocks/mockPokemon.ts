@@ -1,10 +1,4 @@
-import { IPokemonContext } from '../models/pokemonContext.interface';
 import { IPokemon } from '../models/response.interface';
-
-export const mockPokemonContextEmpty: IPokemonContext = {
-  pokemon: [],
-  countPokemon: 0,
-};
 
 export const mockPokemon: IPokemon = {
   id: 8,
@@ -38,7 +32,7 @@ export const mockPokemon: IPokemon = {
   ],
 };
 
-export const mockPokemonContext: IPokemonContext = {
+export const mockPokemonContext = {
   pokemon: [
     {
       id: 8,

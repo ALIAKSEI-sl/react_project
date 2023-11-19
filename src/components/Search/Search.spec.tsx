@@ -1,25 +1,23 @@
+import { Provider } from 'react-redux';
 import * as Router from 'react-router-dom';
+import configureMockStore from 'redux-mock-store';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { SearchTermContext } from '../contexts/contexts';
-import { ISearchTermContext } from '../models/searchTermContext.interface';
+import { searchActions } from '../../store/search.slice';
 import Search from './Search';
 
 describe('Search', () => {
-  const mockSearchTermContext: ISearchTermContext = {
-    searchTerm: 'caterpie',
-    setSearchTerm: jest.fn(),
-  };
+  const initialState = {};
+  const mockStore = configureMockStore();
+  const storeMocked = mockStore(initialState);
 
-  const spy = jest.spyOn(Router, 'useSearchParams');
-
-  it('render elements', () => {
+  it('should render elements', () => {
     render(
       <Router.MemoryRouter>
-        <SearchTermContext.Provider value={mockSearchTermContext}>
+        <Provider store={storeMocked}>
           <Search />
-        </SearchTermContext.Provider>
+        </Provider>
       </Router.MemoryRouter>
     );
 
@@ -30,58 +28,43 @@ describe('Search', () => {
     expect(buttonElement).toBeInTheDocument();
   });
 
-  it('change input value', () => {
+  it('should change input value', () => {
     render(
       <Router.MemoryRouter>
-        <SearchTermContext.Provider value={mockSearchTermContext}>
+        <Provider store={storeMocked}>
           <Search />
-        </SearchTermContext.Provider>
+        </Provider>
       </Router.MemoryRouter>
     );
 
     const inputElement = screen.getByRole('textbox') as HTMLInputElement;
-    expect(inputElement.value).toBe('caterpie');
 
     fireEvent.change(inputElement, { target: { value: 'charmander' } });
 
-    expect(mockSearchTermContext.setSearchTerm).toHaveBeenCalledWith(
-      'charmander'
-    );
+    expect(inputElement.value).toBe('charmander');
   });
 
-  it('change input value if search query params exists', () => {
+  it('should called handleSearchClick', () => {
     render(
-      <Router.MemoryRouter initialEntries={['/?search=butterfree']}>
-        <SearchTermContext.Provider value={mockSearchTermContext}>
+      <Router.MemoryRouter initialEntries={['/3']}>
+        <Provider store={storeMocked}>
           <Search />
-        </SearchTermContext.Provider>
+        </Provider>
       </Router.MemoryRouter>
     );
 
-    expect(mockSearchTermContext.setSearchTerm).toHaveBeenCalledWith(
-      'butterfree'
-    );
-  });
-
-  it('change search query params', () => {
-    render(
-      <Router.MemoryRouter>
-        <SearchTermContext.Provider value={mockSearchTermContext}>
-          <Search />
-        </SearchTermContext.Provider>
-      </Router.MemoryRouter>
-    );
-
-    spy.mockClear();
     const inputElement = screen.getByRole('textbox') as HTMLInputElement;
-    fireEvent.change(inputElement, { target: { value: 'spearow' } });
-
     const buttonElement = screen.getByRole('button') as HTMLButtonElement;
+
+    fireEvent.change(inputElement, { target: { value: 'squirtle' } });
     fireEvent.click(buttonElement);
 
-    expect(spy).toHaveBeenCalled();
+    const expectedAction = searchActions.setParams({
+      searchTerm: 'squirtle',
+      page: 1,
+    });
 
-    fireEvent.click(buttonElement);
-    expect(spy).toHaveBeenCalledTimes(2);
+    const actions = storeMocked.getActions();
+    expect(actions).toEqual([expectedAction]);
   });
 });

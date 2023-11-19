@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import Loader from './Loader';
 
 describe('Loader', () => {
-  it('render elements', () => {
+  it(' should render elements', () => {
     render(
       <MemoryRouter>
         <Loader />

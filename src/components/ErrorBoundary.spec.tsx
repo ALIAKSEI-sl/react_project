@@ -10,7 +10,7 @@ function ErrorElement() {
 }
 
 describe('ErrorBoundary', () => {
-  it('render no error elements', () => {
+  it('should render no error elements', () => {
     render(
       <MemoryRouter>
         <ErrorBoundary>
@@ -23,7 +23,7 @@ describe('ErrorBoundary', () => {
     expect(element).toBeInTheDocument();
   });
 
-  it('render error elements', () => {
+  it('should render error elements', () => {
     render(
       <MemoryRouter>
         <ErrorBoundary>

@@ -6,7 +6,7 @@ import { mockPokemon } from '../../mocks/mockPokemon';
 import DetailsItem from './DetailsItem';
 
 describe('DetailsItem', () => {
-  it('render elements', () => {
+  it('should render elements', () => {
     render(
       <MemoryRouter initialEntries={['/8']}>
         <DetailsItem item={mockPokemon} />

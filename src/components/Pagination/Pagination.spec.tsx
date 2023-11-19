@@ -1,25 +1,30 @@
+import { Provider } from 'react-redux';
 import * as Router from 'react-router-dom';
+import configureMockStore from 'redux-mock-store';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { PokemonContext } from '../contexts/contexts';
-import { IPokemonContext } from '../models/pokemonContext.interface';
+import { searchActions } from '../../store/search.slice';
 import Pagination from './Pagination';
 
 describe('Pagination', () => {
-  const mockPokemonContext: IPokemonContext = {
-    pokemon: [],
-    countPokemon: 30,
+  const mockStore = configureMockStore();
+  const initialState = {
+    search: {
+      page: 2,
+      limit: 20,
+      searchTerm: 'butterfree',
+    },
   };
 
-  const spy = jest.spyOn(Router, 'useSearchParams');
+  it('should render elements', () => {
+    const store = mockStore(initialState);
 
-  it('render elements', () => {
     render(
       <Router.MemoryRouter>
-        <PokemonContext.Provider value={mockPokemonContext}>
-          <Pagination />
-        </PokemonContext.Provider>
+        <Provider store={store}>
+          <Pagination count={20} />
+        </Provider>
       </Router.MemoryRouter>
     );
 
@@ -30,61 +35,97 @@ describe('Pagination', () => {
     expect(selectElement).toBeInTheDocument();
   });
 
-  it('navigation to the next page', () => {
+  it('should navigation to the next page', () => {
+    const store = mockStore(initialState);
+
     render(
-      <Router.MemoryRouter initialEntries={['/?page=1&limit=10']}>
-        <PokemonContext.Provider value={mockPokemonContext}>
-          <Pagination />
-        </PokemonContext.Provider>
+      <Router.MemoryRouter>
+        <Provider store={store}>
+          <Pagination count={50} />
+        </Provider>
       </Router.MemoryRouter>
     );
 
     const buttonElement = screen.getByTestId('next') as HTMLButtonElement;
-
-    spy.mockClear();
-    fireEvent.click(buttonElement);
-    fireEvent.click(buttonElement);
     fireEvent.click(buttonElement);
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    const expectedAction = searchActions.setParams({
+      page: 3,
+    });
+
+    const actions = store.getActions();
+    expect(actions).toEqual([expectedAction]);
   });
 
-  it('navigation to the previous page', () => {
+  it('should navigation to the previous page', () => {
+    const store = mockStore(initialState);
+
     render(
-      <Router.MemoryRouter initialEntries={['/?page=1&limit=20']}>
-        <PokemonContext.Provider value={mockPokemonContext}>
-          <Pagination />
-        </PokemonContext.Provider>
+      <Router.MemoryRouter>
+        <Provider store={store}>
+          <Pagination count={30} />
+        </Provider>
       </Router.MemoryRouter>
     );
 
     const buttonPrevious = screen.getByTestId('previous') as HTMLButtonElement;
-    const buttonNext = screen.getByTestId('next') as HTMLButtonElement;
-
-    fireEvent.click(buttonNext);
-    spy.mockClear();
-
-    fireEvent.click(buttonPrevious);
     fireEvent.click(buttonPrevious);
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    const expectedAction = searchActions.setParams({
+      page: 1,
+    });
+
+    const actions = store.getActions();
+    expect(actions).toEqual([expectedAction]);
   });
 
-  it('change limit', () => {
+  it('should not navigation to the new page', () => {
+    const store = mockStore({
+      search: {
+        page: 1,
+        limit: 20,
+        searchTerm: 'butterfree',
+      },
+    });
+
     render(
       <Router.MemoryRouter initialEntries={['/?page=1&limit=20']}>
-        <PokemonContext.Provider value={mockPokemonContext}>
-          <Pagination />
-        </PokemonContext.Provider>
+        <Provider store={store}>
+          <Pagination count={0} />
+        </Provider>
       </Router.MemoryRouter>
     );
 
-    spy.mockClear();
+    const buttonNext = screen.getByTestId('next') as HTMLButtonElement;
+    fireEvent.click(buttonNext);
+
+    const buttonPrevious = screen.getByTestId('previous') as HTMLButtonElement;
+    fireEvent.click(buttonPrevious);
+
+    const actions = store.getActions();
+    expect(actions).toEqual([]);
+  });
+
+  it('should change limit', () => {
+    const store = mockStore(initialState);
+
+    render(
+      <Router.MemoryRouter>
+        <Provider store={store}>
+          <Pagination count={50} />
+        </Provider>
+      </Router.MemoryRouter>
+    );
+
     const selectElement = screen.getByRole('combobox') as HTMLSelectElement;
     fireEvent.change(selectElement, { target: { value: '10' } });
-    fireEvent.change(selectElement, { target: { value: '25' } });
-    fireEvent.change(selectElement, { target: { value: '15' } });
 
-    expect(spy).toHaveBeenCalledTimes(3);
+    const expectedAction = searchActions.setParams({
+      limit: 10,
+      page: 1,
+    });
+
+    const actions = store.getActions();
+    expect(actions).toEqual([expectedAction]);
   });
 });
