@@ -1,22 +1,19 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useContext } from 'react';
 
+import { PokemonContext } from '../contexts/contexts';
 import useQueryParams from '../hooks/useQueryParams';
 
-type PaginationProps = {
-  count: number;
-};
-
-export default function Pagination(props: PaginationProps) {
-  const { count } = props;
+export default function Pagination() {
   const limits = ['10', '15', '20', '25', '30'];
   const defParams = { page: '1', details: 'false' };
+  const context = useContext(PokemonContext);
 
   const [params, setSearchParams] = useQueryParams();
 
   const nextPage = () => {
     const page = Number(params.page);
     const limit = Number(params.limit);
-    const maxPage = Math.ceil(count / limit);
+    const maxPage = Math.ceil(context.countPokemon / limit);
 
     if (page < maxPage) {
       const next = String(page + 1);
@@ -44,7 +41,12 @@ export default function Pagination(props: PaginationProps) {
 
   return (
     <div className="pagination">
-      <button type="button" onClick={previousPage} className="page-button">
+      <button
+        type="button"
+        onClick={previousPage}
+        className="page-button"
+        data-testid="previous"
+      >
         &lt;
       </button>
       <p className="page">{params.page}</p>
@@ -59,7 +61,12 @@ export default function Pagination(props: PaginationProps) {
           </option>
         ))}
       </select>
-      <button type="button" className="page-button" onClick={nextPage}>
+      <button
+        type="button"
+        className="page-button"
+        onClick={nextPage}
+        data-testid="next"
+      >
         &gt;
       </button>
     </div>

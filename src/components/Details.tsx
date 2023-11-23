@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import requestService from '../api/PokemonService';
+import { PokemonContext } from '../contexts/contexts';
 import useQueryParams from '../hooks/useQueryParams';
 import { IPokemon } from '../models/response.interface';
 import DetailsItem from './DetailsItem';
@@ -9,26 +9,21 @@ import Loader from './Loader';
 
 export default function Details() {
   const { id } = useParams();
+  const context = useContext(PokemonContext);
 
   const [pokemon, setPokemon] = useState<IPokemon>();
-  const [isLoading, setIsLoading] = useState(false);
   const [params, setSearchParams] = useQueryParams();
 
-  const getPokemon = async (pokemonId: string) => {
-    setIsLoading(true);
-
-    const pokemonById = await requestService.getPokemonByQuery(pokemonId);
-    if (pokemonById) {
-      setPokemon(pokemonById);
-    }
-
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    const details = context.pokemon.find((item) => String(item.id) === id);
+    setPokemon(details);
+  }, [context]);
 
   useEffect(() => {
     if (id) {
       setSearchParams({ ...params, details: id });
-      getPokemon(id);
+      const details = context.pokemon.find((item) => String(item.id) === id);
+      setPokemon(details);
     }
   }, [id]);
 
@@ -40,7 +35,7 @@ export default function Details() {
   return (
     <div className="container-details">
       <p className="header-details">details</p>
-      {isLoading ? (
+      {!pokemon ? (
         <Loader />
       ) : (
         <>

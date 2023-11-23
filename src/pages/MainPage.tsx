@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Outlet,
   useLocation,
@@ -9,6 +9,7 @@ import {
 
 import requestService from '../api/PokemonService';
 import { ListResults, Loader, Search } from '../components/index';
+import { PokemonContext, SearchTermContext } from '../contexts/contexts';
 import useQueryParams from '../hooks/useQueryParams';
 import { IParams } from '../models/params.interface';
 import { IPokemon } from '../models/response.interface';
@@ -21,12 +22,23 @@ export default function MainPage() {
   const { search: query } = useLocation();
 
   const [searchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [countPokemon, setCountPokemon] = useState(0);
   const [pokemon, setPokemon] = useState<IPokemon[]>([]);
 
   const [params, setSearchParams] = useQueryParams();
   const { page, limit, search, details }: IParams = params;
+
+  const contextPokemonValue = useMemo(
+    () => ({ pokemon, countPokemon }),
+    [pokemon, countPokemon]
+  );
+
+  const contextSearchTermValue = useMemo(
+    () => ({ searchTerm, setSearchTerm }),
+    [searchTerm, setSearchTerm]
+  );
 
   const getPokemon = async () => {
     setIsLoading(true);
@@ -72,16 +84,16 @@ export default function MainPage() {
 
   return (
     <>
-      <Search />
+      <SearchTermContext.Provider value={contextSearchTermValue}>
+        <Search />
+      </SearchTermContext.Provider>
       <hr />
-      <div className="layout">
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <ListResults items={pokemon} count={countPokemon} />
-        )}
-        <Outlet />
-      </div>
+      <PokemonContext.Provider value={contextPokemonValue}>
+        <div className="layout">
+          {isLoading ? <Loader /> : <ListResults />}
+          <Outlet />
+        </div>
+      </PokemonContext.Provider>
     </>
   );
 }

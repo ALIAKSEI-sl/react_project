@@ -1,23 +1,18 @@
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { PokemonContext } from '../contexts/contexts';
 import useQueryParams from '../hooks/useQueryParams';
-import { IPokemon } from '../models/response.interface';
 import ItemResults from './ItemResults';
 import Pagination from './Pagination';
 
-type ListProps = {
-  items: IPokemon[];
-  count: number;
-};
-
-export default function ListResults(props: ListProps) {
+export default function ListResults() {
   const { id } = useParams();
-  const { items, count } = props;
+  const context = useContext(PokemonContext);
 
   const [params, setSearchParams] = useQueryParams();
 
-  const handleItemClick: MouseEventHandler<HTMLDivElement> = async (event) => {
+  const handleItemClick: MouseEventHandler<HTMLDivElement> = (event) => {
     const classes = ['container-results', 'block-results'];
     const elem = event.target as HTMLElement;
     const isClose = classes.some((name) => elem.classList.contains(name));
@@ -27,15 +22,19 @@ export default function ListResults(props: ListProps) {
     }
   };
 
-  if (!items.length) {
+  if (!context.pokemon.length) {
     return <p>Ничего не найдено</p>;
   }
 
   return (
-    <div className="container-results" onClick={handleItemClick}>
-      <Pagination count={count} />
+    <div
+      className="container-results"
+      onClick={handleItemClick}
+      data-testid="results"
+    >
+      <Pagination />
       <ul className="block-results">
-        {items.map((item) => (
+        {context.pokemon.map((item) => (
           <ItemResults item={item} key={item.id} />
         ))}
       </ul>
