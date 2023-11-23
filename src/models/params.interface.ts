@@ -1,6 +1,5 @@
-export interface IParams {
-  page?: string;
-  limit?: string;
-  search?: string;
-  details?: string;
+export interface ISearchParams {
+  page: number;
+  limit: number;
+  searchTerm: string;
 }

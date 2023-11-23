@@ -3,13 +3,13 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { render, screen, waitFor } from '@testing-library/react';
 
-import pokemonService from './api/PokemonService';
-import App from './App';
-import server from './mocks/handlers';
-import { mockPokemonResponse } from './mocks/mockPokemon';
-import { store } from './store';
+import pokemonService from '../../api/PokemonService';
+import server from '../../mocks/handlers';
+import { mockPokemonResponse } from '../../mocks/mockPokemon';
+import { store } from '../../store';
+import MainPage from './MainPage';
 
-describe('should render App', () => {
+describe('should render MainPage', () => {
   beforeAll(() => {
     jest
       .spyOn(pokemonService, 'getAllPokemon')
@@ -26,11 +26,11 @@ describe('should render App', () => {
     server.close();
   });
 
-  it('should render elements', async () => {
+  it('should render main page', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Provider store={store}>
-          <App />
+          <MainPage />
         </Provider>
       </MemoryRouter>
     );

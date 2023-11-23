@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-import useQueryParams from '../hooks/useQueryParams';
-import { IPokemon } from '../models/response.interface';
+import { IPokemon } from '../../models/response.interface';
+import styles from './ItemResults.module.css';
 
 type ItemProps = {
   item: IPokemon;
@@ -12,17 +12,15 @@ export default function ItemResults(props: ItemProps) {
   const { search } = useLocation();
   const link = String(item.id) + search;
 
-  const [params, setSearchParams] = useQueryParams();
-
-  const handleItemClick = () => {
-    setSearchParams({ ...params, details: String(item.id) });
+  const handleItemClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
   };
 
   return (
     <NavLink to={link} onClick={handleItemClick}>
-      <li className="card">
+      <li className={styles.card}>
         <img
-          className="card-img"
+          className={styles['card-img']}
           src={item.sprites.other.dream_world.front_default}
           alt={item.name}
         />

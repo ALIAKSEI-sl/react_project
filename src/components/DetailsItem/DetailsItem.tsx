@@ -1,4 +1,5 @@
-import { IPokemon } from '../models/response.interface';
+import { IPokemon } from '../../models/response.interface';
+import styles from './DetailsItem.module.css';
 
 type IDetailsItemProps = {
   item: IPokemon;
@@ -10,7 +11,7 @@ export default function DetailsItem(props: IDetailsItemProps) {
   return (
     <>
       <img
-        className="details-img"
+        className={styles['details-img']}
         src={item.sprites.other.dream_world.front_default}
         alt={item.name}
       />
