@@ -1,17 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { createWrapper } from "next-redux-wrapper";
 
-import { pokemonApi } from './pokemon.api';
-import { searchReducer } from './search.slice';
+import { configureStore } from "@reduxjs/toolkit";
 
-export const store = configureStore({
-  reducer: {
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
-    search: searchReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pokemonApi.middleware),
-});
+import { pokemonApi } from "./pokemon.api";
+import { searchReducer } from "./search.slice";
 
-type RootState = ReturnType<typeof store.getState>;
+export const makeStore = () =>
+  configureStore({
+    reducer: {
+      [pokemonApi.reducerPath]: pokemonApi.reducer,
+      search: searchReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(pokemonApi.middleware),
+  });
 
-export const searchParamsSelect = (state: RootState) => state.search;
+type AppStore = ReturnType<typeof makeStore>;
+
+export const searchParamsSelect = (state: AppStore) => state.getState().search;
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

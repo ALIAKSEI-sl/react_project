@@ -1,26 +1,26 @@
-import { ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+"use client";
+import { ChangeEvent, useState } from "react";
+import { useDispatch } from "react-redux";
 
-import { searchActions } from '../../store/search.slice';
-import styles from './Search.module.css';
+import { searchActions } from "../../store/search.slice";
+import styles from "./Search.module.css";
 
 export default function Search() {
   const defaultPage = 1;
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+  // const { id } = useParams();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { setParams } = searchActions;
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchClick = () => {
     const action = setParams({ searchTerm, page: defaultPage });
     dispatch(action);
-    if (id) {
-      navigate('/');
-    }
+    // if (id) {
+    //   navigate('/');
+    // }
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
