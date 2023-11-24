@@ -2,12 +2,14 @@
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 
+import { useAppSelector } from "@/store/hooks";
+
 import { searchActions } from "../../store/search.slice";
 import styles from "./Search.module.css";
 
 export default function Search() {
   const defaultPage = 1;
-
+  const search = useAppSelector((state) => state.search);
   // const { id } = useParams();
   // const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ export default function Search() {
     const action = setParams({ searchTerm, page: defaultPage });
     dispatch(action);
     // if (id) {
-    //   navigate('/');
+    //   navigate("/");
     // }
   };
 

@@ -1,13 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import pokemonService from '../api/PokemonService';
-import { ISearchParams } from '../models/params.interface';
-import { IPokemonDetails } from '../models/response.interface';
+import pokemonService from "../api/PokemonService";
+import { ISearchParams } from "../models/params.interface";
+import { IPokemonDetails } from "../models/response.interface";
 
 export const pokemonApi = createApi({
-  reducerPath: 'pokemon',
+  reducerPath: "pokemon",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://pokeapi.co/api/v2/pokemon/',
+    baseUrl: "https://pokeapi.co/api/v2/pokemon/",
   }),
   endpoints: (build) => ({
     pokemon: build.query<IPokemonDetails, ISearchParams>({
@@ -40,4 +40,10 @@ export const pokemonApi = createApi({
   }),
 });
 
-export const { usePokemonQuery, useLazyPokemonQuery } = pokemonApi;
+export const {
+  usePokemonQuery,
+  useLazyPokemonQuery,
+  util: { getRunningQueriesThunk },
+} = pokemonApi;
+
+export const { pokemon: getPokemon } = pokemonApi.endpoints;
