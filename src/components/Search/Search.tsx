@@ -1,18 +1,14 @@
-"use client";
 import { ChangeEvent, useState } from "react";
-import { useDispatch } from "react-redux";
 
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
+import { searchActions } from "@/store/search.slice";
 
-import { searchActions } from "../../store/search.slice";
 import styles from "./Search.module.css";
 
 export default function Search() {
   const defaultPage = 1;
-  const search = useAppSelector((state) => state.search);
-  // const { id } = useParams();
-  // const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const dispatch = useAppDispatch();
   const { setParams } = searchActions;
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,9 +16,6 @@ export default function Search() {
   const handleSearchClick = () => {
     const action = setParams({ searchTerm, page: defaultPage });
     dispatch(action);
-    // if (id) {
-    //   navigate("/");
-    // }
   };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {

@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import pokemonService from "../api/PokemonService";
-import { ISearchParams } from "../models/params.interface";
-import { IPokemonDetails } from "../models/response.interface";
+import pokemonService from '../api/PokemonService';
+import { ISearchParams } from '../models/params.interface';
+import { IPokemonDetails } from '../models/response.interface';
 
 export const pokemonApi = createApi({
   reducerPath: "pokemon",
@@ -24,19 +24,7 @@ export const pokemonApi = createApi({
         const pokemon = await pokemonService.getAllPokemon(limit, offset);
         return { data: pokemon };
       },
-    }),
-    // pokemonList: build.query<IPokemon[], ISearchParams>({
-    //   query: ({ limit, searchTerm, page }) => {
-    //     const offset = (page - 1) * limit;
-    //     return {
-    //       url: searchTerm ?? '',
-    //       params: {
-    //         limit,
-    //         offset,
-    //       },
-    //     };
-    //   },
-    // }),
+    }),    
   }),
 });
 
