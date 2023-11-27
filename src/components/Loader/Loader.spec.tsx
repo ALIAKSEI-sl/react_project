@@ -1,18 +1,12 @@
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen } from "@testing-library/react";
 
-import { render, screen } from '@testing-library/react';
+import Loader from "./Loader";
 
-import Loader from './Loader';
+describe("Loader", () => {
+  it(" should render elements", () => {
+    render(<Loader />);
 
-describe('Loader', () => {
-  it(' should render elements', () => {
-    render(
-      <MemoryRouter>
-        <Loader />
-      </MemoryRouter>
-    );
-
-    const containerLoader = screen.getByTestId('loader');
+    const containerLoader = screen.getByTestId("loader");
     expect(containerLoader).toBeInTheDocument();
   });
 });

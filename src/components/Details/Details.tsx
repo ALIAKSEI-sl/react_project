@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 
-import { IPokemon } from "@/models/response.interface";
-
+import { IPokemon } from "../../models/response.interface";
 import DetailsItem from "../DetailsItem/DetailsItem";
 import Loader from "../Loader/Loader";
 import styles from "./Details.module.css";

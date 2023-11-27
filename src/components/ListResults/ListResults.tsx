@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 
-import { IPokemonDetails } from "@/models/response.interface";
-
+import { IPokemonDetails } from "../../models/response.interface";
 import ItemResults from "../ItemResults/ItemResults";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";

@@ -1,39 +1,44 @@
-import { MemoryRouter } from 'react-router-dom';
+import mockRouter from "next-router-mock";
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
 
-import { render, screen } from '@testing-library/react';
+import { render, screen } from "@testing-library/react";
 
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from "./ErrorBoundary";
 
 function ErrorElement() {
-  throw new Error('Упс, произошла ошибка.');
+  throw new Error("Упс, произошла ошибка.");
   return <div />;
 }
 
-describe('ErrorBoundary', () => {
-  it('should render no error elements', () => {
+describe("ErrorBoundary", () => {
+  it("should render no error elements", () => {
+    mockRouter.setCurrentUrl("/?page=1&limit=10");
+
     render(
-      <MemoryRouter>
+      <RouterContext.Provider value={mockRouter}>
         <ErrorBoundary>
           <div>No error</div>
         </ErrorBoundary>
-      </MemoryRouter>
+      </RouterContext.Provider>
     );
 
-    const element = screen.getByText('No error');
+    const element = screen.getByText("No error");
     expect(element).toBeInTheDocument();
   });
 
-  it('should render error elements', () => {
+  it("should render error elements", () => {
+    mockRouter.setCurrentUrl("/?page=1&limit=10");
+
     render(
-      <MemoryRouter>
+      <RouterContext.Provider value={mockRouter}>
         <ErrorBoundary>
           <ErrorElement />
         </ErrorBoundary>
-      </MemoryRouter>
+      </RouterContext.Provider>
     );
 
     const element = screen.getByText(
-      'Произошла ошибка. Пожалуйста, обновите страницу.'
+      "Произошла ошибка. Пожалуйста, обновите страницу."
     );
     expect(element).toBeInTheDocument();
   });

@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { searchActions } from "../../store/search.slice";
 import styles from "./Pagination.module.css";
 

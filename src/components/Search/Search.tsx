@@ -1,8 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
-import { useAppDispatch } from "@/store/hooks";
-import { searchActions } from "@/store/search.slice";
-
+import { useAppDispatch } from "../../store/hooks";
+import { searchActions } from "../../store/search.slice";
 import styles from "./Search.module.css";
 
 export default function Search() {
