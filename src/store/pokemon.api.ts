@@ -5,9 +5,9 @@ import { ISearchParams } from '../models/params.interface';
 import { IPokemonDetails } from '../models/response.interface';
 
 export const pokemonApi = createApi({
-  reducerPath: 'pokemon',
+  reducerPath: "pokemon",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://pokeapi.co/api/v2/pokemon/',
+    baseUrl: "https://pokeapi.co/api/v2/pokemon/",
   }),
   endpoints: (build) => ({
     pokemon: build.query<IPokemonDetails, ISearchParams>({
@@ -24,20 +24,14 @@ export const pokemonApi = createApi({
         const pokemon = await pokemonService.getAllPokemon(limit, offset);
         return { data: pokemon };
       },
-    }),
-    // pokemonList: build.query<IPokemon[], ISearchParams>({
-    //   query: ({ limit, searchTerm, page }) => {
-    //     const offset = (page - 1) * limit;
-    //     return {
-    //       url: searchTerm ?? '',
-    //       params: {
-    //         limit,
-    //         offset,
-    //       },
-    //     };
-    //   },
-    // }),
+    }),    
   }),
 });
 
-export const { usePokemonQuery, useLazyPokemonQuery } = pokemonApi;
+export const {
+  usePokemonQuery,
+  useLazyPokemonQuery,
+  util: { getRunningQueriesThunk },
+} = pokemonApi;
+
+export const { pokemon: getPokemon } = pokemonApi.endpoints;

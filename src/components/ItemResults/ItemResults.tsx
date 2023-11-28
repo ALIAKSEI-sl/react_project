@@ -1,7 +1,9 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { IPokemon } from '../../models/response.interface';
-import styles from './ItemResults.module.css';
+import { IPokemon } from "../../models/response.interface";
+import styles from "./ItemResults.module.css";
 
 type ItemProps = {
   item: IPokemon;
@@ -9,27 +11,34 @@ type ItemProps = {
 
 export default function ItemResults(props: ItemProps) {
   const { item } = props;
-  const { search } = useLocation();
-  const link = String(item.id) + search;
+  const router = useRouter();
+  const { page, limit, searchTerm } = router.query;
+
+  const href = {
+    pathname: `/details/${item.id}`,
+    query: { limit, page, searchTerm },
+  };
 
   const handleItemClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.stopPropagation();
   };
 
   return (
-    <NavLink to={link} onClick={handleItemClick}>
+    <Link href={href} onClick={handleItemClick}>
       <li className={styles.card}>
-        <img
-          className={styles['card-img']}
+        <Image
+          className={styles["card-img"]}
           src={item.sprites.other.dream_world.front_default}
           alt={item.name}
+          width="300"
+          height="300"
         />
         <h2>{item.name}</h2>
         <p>
           <strong>types: </strong>
-          {item.types.map((t) => t.type.name).join(', ')}
+          {item.types.map((t) => t.type.name).join(", ")}
         </p>
       </li>
-    </NavLink>
+    </Link>
   );
 }

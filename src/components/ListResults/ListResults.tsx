@@ -1,36 +1,43 @@
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from "next/router";
 
-import { searchParamsSelect } from '../../store';
-import { usePokemonQuery } from '../../store/pokemon.api';
-import { ItemResults, Loader, Pagination } from '../index';
-import styles from './ListResults.module.css';
+import { IPokemonDetails } from "../../models/response.interface";
+import ItemResults from "../ItemResults/ItemResults";
+import Loader from "../Loader/Loader";
+import Pagination from "../Pagination/Pagination";
+import styles from "./ListResults.module.css";
 
-export default function ListResults() {
-  const navigate = useNavigate();
+type ListResultsProps = {
+  data: IPokemonDetails;
+};
 
-  const searchParams = useSelector(searchParamsSelect);
-  const { data, status } = usePokemonQuery(searchParams);
+export default function ListResults(props: ListResultsProps) {
+  const { data } = props;
 
-  const handleItemClick = () => {
-    navigate('/');
+  const router = useRouter();
+  const { page, limit, searchTerm } = router.query;
+
+  const href = {
+    pathname: "/",
+    query: { limit, page, searchTerm },
   };
 
-  if (data && !data?.pokemon.length) {
-    return <p>Ничего не найдено</p>;
-  }
+  const handleItemClick = () => {
+    router.push(href);
+  };
 
-  return status === 'pending' ? (
+  return !data.pokemon ? (
     <Loader />
   ) : (
     <div
-      className={styles['container-results']}
+      className={styles["container-results"]}
       onClick={handleItemClick}
       data-testid="results"
     >
-      <Pagination count={data?.count ?? 0} />
-      <ul className={styles['block-results']}>
-        {data?.pokemon.map((item) => <ItemResults item={item} key={item.id} />)}
+      <Pagination count={data.count} />
+      <ul className={styles["block-results"]}>
+        {data.pokemon.map((item) => (
+          <ItemResults item={item} key={item.id} />
+        ))}
       </ul>
     </div>
   );

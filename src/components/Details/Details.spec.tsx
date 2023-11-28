@@ -1,18 +1,19 @@
-import { Provider } from 'react-redux';
-import * as Router from 'react-router-dom';
+import mockRouter from "next-router-mock";
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
+import { Provider } from "react-redux";
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import pokemonService from '../../api/PokemonService';
-import server from '../../mocks/handlers';
-import { mockPokemon } from '../../mocks/mockPokemon';
-import { store } from '../../store';
-import Details from './Details';
+import pokemonService from "../../api/PokemonService";
+import server from "../../mocks/handlers";
+import { mockPokemon } from "../../mocks/mockPokemon";
+import { store } from "../../store/appStore";
+import Details from "./Details";
 
-describe('Details', () => {
+describe("Details", () => {
   beforeAll(() => {
     jest
-      .spyOn(pokemonService, 'getPokemonByQuery')
+      .spyOn(pokemonService, "getPokemonByQuery")
       .mockReturnValue(Promise.resolve(mockPokemon));
 
     server.listen();
@@ -26,25 +27,24 @@ describe('Details', () => {
     server.close();
   });
 
-  it(' should render details', async () => {
+  it(" should render details", async () => {
+    mockRouter.setCurrentUrl("/?page=1&limit=10");
     render(
-      <Router.MemoryRouter initialEntries={['/8?page=1&limit=20']}>
+      <RouterContext.Provider value={mockRouter}>
         <Provider store={store}>
-          <Router.Routes>
-            <Router.Route path="/:id" element={<Details />} />
-          </Router.Routes>
+          <Details data={mockPokemon} />
         </Provider>
-      </Router.MemoryRouter>
+      </RouterContext.Provider>
     );
 
     await waitFor(() => {
-      const buttonElement = screen.getByRole('button') as HTMLButtonElement;
+      const buttonElement = screen.getByRole("button") as HTMLButtonElement;
       expect(buttonElement).toBeInTheDocument();
 
-      const imgElement = screen.getByRole('img') as HTMLImageElement;
+      const imgElement = screen.getByRole("img") as HTMLImageElement;
       expect(imgElement).toBeInTheDocument();
 
-      const headerElement = screen.getByRole('heading', { level: 2 });
+      const headerElement = screen.getByRole("heading", { level: 2 });
       expect(headerElement).toBeInTheDocument();
 
       fireEvent.click(buttonElement);

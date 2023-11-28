@@ -1,42 +1,45 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useRouter } from "next/router";
 
-import { usePokemonQuery } from '../../store/pokemon.api';
-import { DetailsItem, Loader } from '../index';
-import styles from './Details.module.css';
+import { IPokemon } from "../../models/response.interface";
+import DetailsItem from "../DetailsItem/DetailsItem";
+import Loader from "../Loader/Loader";
+import styles from "./Details.module.css";
 
-export default function Details() {
+type DetailsProps = {
+  data: IPokemon;
+};
+
+export default function Details(props: DetailsProps) {
+  const { data } = props;
   const defaultParams = { page: 1, limit: 20 };
 
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { data, status } = usePokemonQuery({
-    ...defaultParams,
-    searchTerm: id as string,
-  });
+  const router = useRouter();
+  const { page, limit, searchTerm } = router.query;
 
-  const closeDetails = () => {
-    navigate('/');
+  const href = {
+    pathname: "/",
+    query: { limit, page, searchTerm },
   };
 
-  if (data && !data?.pokemon.length) {
-    navigate('/');
-  }
+  const closeDetails = () => {
+    router.push(href);
+  };
 
   return (
-    <div className={styles['container-details']}>
-      <p className={styles['header-details']}>details</p>
-      {status === 'pending' ? (
+    <div className={styles["container-details"]}>
+      <p className={styles["header-details"]}>details</p>
+      {!data ? (
         <Loader />
       ) : (
         <>
           <button
             type="button"
             onClick={closeDetails}
-            className={styles['details-close']}
+            className={styles["details-close"]}
           >
             X
           </button>
-          {data && <DetailsItem item={data?.pokemon[0]} />}
+          <DetailsItem item={data} />
         </>
       )}
     </div>

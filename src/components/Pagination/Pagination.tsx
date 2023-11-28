@@ -1,23 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-import { searchParamsSelect } from '../../store';
-import { searchActions } from '../../store/search.slice';
-import styles from './Pagination.module.css';
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { searchActions } from "../../store/search.slice";
+import styles from "./Pagination.module.css";
 
 type PaginationProps = {
   count: number;
 };
 
 export default function Pagination(props: PaginationProps) {
-  const defaultPage = 1;
-  const limits = ['10', '15', '20', '25', '30'];
-
   const { count } = props;
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const defaultPage = 1;
+  const limits = ["10", "15", "20", "25", "30"];
+
+  const dispatch = useAppDispatch();
   const { setParams } = searchActions;
-  const { page, limit } = useSelector(searchParamsSelect);
+  const { limit, page } = useAppSelector((state) => state.search);
 
   const nextPage = () => {
     const maxPage = Math.ceil(count / limit);
@@ -38,7 +35,6 @@ export default function Pagination(props: PaginationProps) {
     const { value } = event.target;
     const action = setParams({ limit: Number(value), page: defaultPage });
     dispatch(action);
-    navigate('/');
   };
 
   return (
@@ -46,7 +42,7 @@ export default function Pagination(props: PaginationProps) {
       <button
         type="button"
         onClick={previousPage}
-        className={styles['page-button']}
+        className={styles["page-button"]}
         data-testid="previous"
       >
         &lt;
@@ -54,7 +50,7 @@ export default function Pagination(props: PaginationProps) {
       <p className={styles.page}>{page}</p>
       <select
         value={String(limit)}
-        className={styles['select-page']}
+        className={styles["select-page"]}
         onChange={handleSelectChange}
         onClick={(event) => event.stopPropagation()}
       >
@@ -66,7 +62,7 @@ export default function Pagination(props: PaginationProps) {
       </select>
       <button
         type="button"
-        className={styles['page-button']}
+        className={styles["page-button"]}
         onClick={nextPage}
         data-testid="next"
       >

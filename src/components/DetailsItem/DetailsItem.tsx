@@ -1,5 +1,7 @@
-import { IPokemon } from '../../models/response.interface';
-import styles from './DetailsItem.module.css';
+import Image from "next/image";
+
+import { IPokemon } from "../../models/response.interface";
+import styles from "./DetailsItem.module.css";
 
 type IDetailsItemProps = {
   item: IPokemon;
@@ -10,10 +12,12 @@ export default function DetailsItem(props: IDetailsItemProps) {
 
   return (
     <>
-      <img
-        className={styles['details-img']}
+      <Image
+        className={styles["details-img"]}
         src={item.sprites.other.dream_world.front_default}
         alt={item.name}
+        width="400"
+        height="400"
       />
       <h2>{item.name}</h2>
       <p>
@@ -22,11 +26,11 @@ export default function DetailsItem(props: IDetailsItemProps) {
       </p>
       <p>
         <strong>types: </strong>
-        {item.types.map((t) => t.type.name).join(', ')}
+        {item.types.map((t) => t.type.name).join(", ")}
       </p>
       <p>
         <strong>abilities: </strong>
-        {item.abilities.map((a) => a.ability.name).join(', ')}
+        {item.abilities.map((a) => a.ability.name).join(", ")}
       </p>
       <p>
         <strong>weight: </strong>

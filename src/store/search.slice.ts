@@ -1,17 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IPokemonDetails } from "@/models/response.interface";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { ISearchParams } from '../models/params.interface';
+import { ISearchParams } from "../models/params.interface";
 
-const localKey = 'pokemon-searchTerm';
+const localKey = "pokemon-searchTerm";
 
 const initialState: ISearchParams = {
-  searchTerm: '',
+  searchTerm: "",
   page: 1,
   limit: 20,
 };
 
 export const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     setParams: (state, action: PayloadAction<Partial<ISearchParams>>) => {
@@ -20,6 +21,9 @@ export const searchSlice = createSlice({
         localStorage.setItem(localKey, searchTerm);
       }
       return { ...state, ...action.payload };
+    },
+    pokemon: (state, action: PayloadAction<IPokemonDetails>) => {
+      return { ...state, pokemon: action.payload };
     },
   },
 });
