@@ -1,4 +1,8 @@
 :root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: rgba(255, 255, 255, 0.8);
   background-color: #000;
@@ -12,8 +16,5 @@
 
 a {
   text-decoration: none;
-}
-
-.error-block {
-  font-size: 50px;
+  color: #fff;
 }
