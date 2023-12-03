@@ -1,5 +1,9 @@
-export { default as Search } from './Search/Search';
-export { default as Loader } from './Loader/Loader';
-export { default as Pagination } from './Pagination/Pagination';
-export { default as ItemResults } from './ItemResults/ItemResults';
-export { default as DetailsItem } from './DetailsItem/DetailsItem';
+export { default as InputAcceptance } from './InputAcceptance';
+export { default as InputAge } from './InputAge';
+export { default as InputConfirmPassword } from './InputConfirmPassword';
+export { default as InputCountries } from './InputCountries';
+export { default as InputEmail } from './InputEmail';
+export { default as InputGender } from './InputGender';
+export { default as InputImg } from './InputImg';
+export { default as InputName } from './InputName';
+export { default as InputPassword } from './InputPassword';
