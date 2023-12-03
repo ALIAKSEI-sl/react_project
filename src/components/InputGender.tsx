@@ -1,5 +1,5 @@
 import { InputProps } from '../models/inputProps.interface';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
 
 export default function InputGender(props: InputProps) {
   const { register } = props;

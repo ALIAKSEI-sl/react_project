@@ -1,5 +1,6 @@
 import { InputProps } from '../models/inputProps.interface';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
+import Errors from './Errors';
 
 export default function InputAge(props: InputProps) {
   const { register, errors } = props;
@@ -21,7 +22,7 @@ export default function InputAge(props: InputProps) {
           placeholder="Age"
         />
       </label>
-      {errors?.age && <p className={styles.error}>{errors.age.message}</p>}
+      <Errors errors={errors.age} />
     </div>
   );
 }

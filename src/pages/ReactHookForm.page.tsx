@@ -15,7 +15,7 @@ import {
 import { IForm } from '../models/form.interface';
 import { addForm } from '../store/forms.slice';
 import { useAppDispatch } from '../store/hooks';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
 
 export default function ReactHookFormPage() {
   const {

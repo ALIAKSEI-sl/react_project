@@ -2,7 +2,8 @@ import { useState } from 'react';
 
 import { InputCountriesProps } from '../models/inputProps.interface';
 import { useAppSelector } from '../store/hooks';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
+import Errors from './Errors';
 
 export default function InputCountries(props: InputCountriesProps) {
   const { register, errors, getValues, setValue } = props;
@@ -58,9 +59,7 @@ export default function InputCountries(props: InputCountriesProps) {
           )}
         </div>
       </label>
-      {errors?.countries && (
-        <p className={styles.error}>{errors.countries.message}</p>
-      )}
+      <Errors errors={errors.countries} />
     </div>
   );
 }

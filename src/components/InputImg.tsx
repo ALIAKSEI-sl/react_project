@@ -1,5 +1,6 @@
 import { InputProps } from '../models/inputProps.interface';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
+import Errors from './Errors';
 
 export default function InputImg(props: InputProps) {
   const { register, errors } = props;
@@ -9,7 +10,7 @@ export default function InputImg(props: InputProps) {
     const file = data[0];
 
     if (file.size > maxFileSize) {
-      return 'File size exceeds the allowed limit (5 MB).';
+      return 'File size exceeds the allowed limit (5 MB)';
     }
 
     return true;
@@ -28,7 +29,7 @@ export default function InputImg(props: InputProps) {
           })}
         />
       </label>
-      {errors?.img && <p className={styles.error}>{errors.img.message}</p>}
+      <Errors errors={errors.img} />
     </div>
   );
 }

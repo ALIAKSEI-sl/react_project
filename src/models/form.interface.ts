@@ -22,4 +22,16 @@ export interface IFormStore {
   countries: string;
 }
 
+export interface IFormYup {
+  name?: string;
+  age?: number;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  gender?: string;
+  acceptance?: boolean;
+  img?: FileList | null;
+  countries?: string;
+}
+
 type Gender = 'male' | 'female';

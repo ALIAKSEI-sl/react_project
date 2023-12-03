@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   width: 600px;
   margin: 30px auto;
   padding: 30px;
@@ -37,6 +37,10 @@
 
 .block-img input {
   font-size: 18px;
+}
+
+.block-acceptance {
+  margin-top: 24px;
 }
 
 .block-acceptance label {
@@ -85,4 +89,8 @@
 
 .hint {
   cursor: pointer;
+}
+
+.errors-block {
+  height: 24px;
 }

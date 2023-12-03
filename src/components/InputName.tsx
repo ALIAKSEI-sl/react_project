@@ -1,5 +1,6 @@
 import { InputProps } from '../models/inputProps.interface';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
+import Errors from './Errors';
 
 export default function InputName(props: InputProps) {
   const { register, errors } = props;
@@ -21,7 +22,7 @@ export default function InputName(props: InputProps) {
           placeholder="Name"
         />
       </label>
-      {errors?.name && <p className={styles.error}>{errors.name.message}</p>}
+      <Errors errors={errors.name} />
     </div>
   );
 }

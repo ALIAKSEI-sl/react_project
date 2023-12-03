@@ -1,5 +1,6 @@
 import { InputConfirmPasswordProps } from '../models/inputProps.interface';
-import styles from '../styles/ReactHookForm.module.css';
+import styles from '../styles/Forms.module.css';
+import Errors from './Errors';
 
 export default function InputConfirmPassword(props: InputConfirmPasswordProps) {
   const { register, errors, getValues } = props;
@@ -19,9 +20,7 @@ export default function InputConfirmPassword(props: InputConfirmPasswordProps) {
           placeholder="Password"
         />
       </label>
-      {errors?.confirmPassword && (
-        <p className={styles.error}>{errors.confirmPassword.message}</p>
-      )}
+      <Errors errors={errors.confirmPassword} />
     </div>
   );
 }
