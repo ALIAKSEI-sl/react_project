@@ -1,9 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import countries from './countries.json';
+import { formsReducer } from './forms.slice';
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    countries: () => countries,
+    forms: formsReducer,
+  },
 });
 
-type RootState = ReturnType<typeof store.getState>;
-
-export const searchParamsSelect = (state: RootState) => state;
+export type AppStore = typeof store;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = AppStore['dispatch'];

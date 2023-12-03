@@ -1,0 +1,9 @@
+export { default as InputAcceptance } from './InputAcceptance';
+export { default as InputAge } from './InputAge';
+export { default as InputConfirmPassword } from './InputConfirmPassword';
+export { default as InputCountries } from './InputCountries';
+export { default as InputEmail } from './InputEmail';
+export { default as InputGender } from './InputGender';
+export { default as InputImg } from './InputImg';
+export { default as InputName } from './InputName';
+export { default as InputPassword } from './InputPassword';
